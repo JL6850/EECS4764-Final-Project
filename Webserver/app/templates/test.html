@@ -4,15 +4,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Test Page</title>
+    <script>
+        // 定期获取最新数据
+        async function fetchLatestData() {
+            try {
+                const response = await fetch('/api/data', { method: 'GET' });
+                const result = await response.json();
+
+                // 检查是否有数据
+                if (result.error) {
+                    document.getElementById('response').textContent = result.error;
+                } else {
+                    document.getElementById('response').textContent = JSON.stringify(result.data, null, 2);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                document.getElementById('response').textContent = "Error fetching data.";
+            }
+        }
+
+        // 每隔 2 秒刷新一次数据
+        setInterval(fetchLatestData, 2000);
+
+        // 页面加载完成后立即加载数据
+        document.addEventListener('DOMContentLoaded', fetchLatestData);
+    </script>
 </head>
 <body>
     <h1>Received JSON Data</h1>
-    {% if error %}
-        <p style="color: red;">Error: {{ error }}</p>
-    {% elif data %}
-        <pre>{{ data | tojson(indent=2) }}</pre>
-    {% else %}
-        <p>No data received yet.</p>
-    {% endif %}
+    <pre id="response">Waiting for server response...</pre>
 </body>
 </html>
