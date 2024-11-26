@@ -1,0 +1,155 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.game-board {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-gap: 5px;
+    width: 100%;
+    max-width: 1500px;
+    margin: 20px auto;
+    padding: 10px;
+    background-color: #ffffff;
+    border-radius: 10px;
+}
+
+.zone {
+    position: relative;
+    width: 100%;
+    padding-top: 100%;
+    background-color: #ffffff;
+    border: 2px solid white;
+    text-align: center;
+    overflow: hidden;
+    border-radius: 5px;
+}
+
+.zone img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    cursor: pointer;
+}
+
+.menu {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: left;
+    z-index: 2;
+}
+
+.menu button {
+    display: block;
+    background: #444;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    margin: 5px 0;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.menu button:hover {
+    background: #666;
+}
+
+.zone:hover .menu {
+    display: block;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.modal-content {
+    position: relative;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: center;
+    color: white;
+}
+
+.modal img {
+    display: block;
+    margin: 0 auto;
+    max-width: 90%;
+    max-height: 70%;
+}
+
+.close {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.zone span {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 1;
+    text-shadow: 1px 1px 3px black;
+}
+
+.zone.monster {
+    background-color: #ff6347;
+}
+
+.zone.spell {
+    background-color: #1e90ff;
+}
+
+.zone.extra-monster {
+    background-color: #9370db;
+}
+
+.zone.extra-deck {
+    background-color: #8a2be2;
+}
+
+.zone.deck {
+    background-color: #32cd32;
+}
+
+.zone.graveyard {
+    background-color: #8b4513;
+}
+
+.zone.field {
+    background-color: #ffa500;
+}
+
+.zone.empty {
+    background-color: #ffffff;
+}
