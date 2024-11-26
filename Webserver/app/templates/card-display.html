@@ -1,73 +1,72 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>游戏王卡牌区域布局</title>
+    <title>Yu-Gi-Oh Card Layout</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>游戏王卡牌区域布局</h1>
+    <h1>Yu-Gi-Oh Card Layout</h1>
     <div class="game-board">
-        <!-- 额外怪兽区域 -->
+        <!-- Extra Monster Zones -->
         <div class="zone extra-monster">
-            <span>额外怪兽区</span>
+            <span>Extra Monster Zone</span>
         </div>
         <div class="zone empty"></div>
         <div class="zone empty"></div>
         <div class="zone extra-monster">
-            <span>额外怪兽区</span>
+            <span>Extra Monster Zone</span>
         </div>
         <div class="zone empty"></div>
         <div class="zone empty"></div>
         <div class="zone field">
-            <span>场地魔法区</span>
+            <span>Field Spell Zone</span>
         </div>
 
-        <!-- 怪兽区域 -->
+        <!-- Monster Zones -->
         <div class="zone monster">
-            <span>怪兽区</span>
+            <span>Monster Zone</span>
         </div>
         <div class="zone monster">
-            <span>怪兽区</span>
+            <span>Monster Zone</span>
         </div>
         <div class="zone monster">
-            <span>怪兽区</span>
+            <span>Monster Zone</span>
         </div>
         <div class="zone monster">
-            <span>怪兽区</span>
+            <span>Monster Zone</span>
         </div>
         <div class="zone monster">
-            <span>怪兽区</span>
+            <span>Monster Zone</span>
         </div>
         <div class="zone empty"></div>
         <div class="zone graveyard">
-            <span>墓地</span>
+            <span>Graveyard</span>
         </div>
 
-        <!-- 魔法与陷阱区域 -->
+        <!-- Spell and Trap Zones -->
         <div class="zone spell">
-            <span>魔法/陷阱区</span>
+            <span>Spell/Trap Zone</span>
         </div>
         <div class="zone spell">
-            <img src="/data/card/44818.jpg" alt="怪兽卡" data-text="这是一张强大的怪兽卡" onclick="openModal(this)">
-            <span>魔法/陷阱区</span>
+            <span>Spell/Trap Zone</span>
         </div>
         <div class="zone spell">
-            <span>魔法/陷阱区</span>
+            <span>Spell/Trap Zone</span>
         </div>
         <div class="zone spell">
-            <span>魔法/陷阱区</span>
+            <span>Spell/Trap Zone</span>
         </div>
         <div class="zone spell">
-            <span>魔法/陷阱区</span>
+            <span>Spell/Trap Zone</span>
         </div>
         <div class="zone empty"></div>
         <div class="zone extra-deck">
-            <span>额外卡组</span>
+            <span>Extra Deck</span>
         </div>
 
-        <!-- 主卡组 -->
+        <!-- Main Deck -->
         <div class="zone empty"></div>
         <div class="zone empty"></div>
         <div class="zone empty"></div>
@@ -75,18 +74,21 @@
         <div class="zone empty"></div>
         <div class="zone empty"></div>
         <div class="zone deck">
-            <span>主卡组</span>
+            <span>Main Deck</span>
         </div>
 
-        <!-- 图片放大弹窗 -->
+        <!-- Image Modal -->
         <div id="imageModal" class="modal">
             <span class="close" onclick="closeModal()">&times;</span>
             <div class="modal-content">
-                <img id="modalImage" src="" alt="放大的卡牌">
+                <img id="modalImage" src="" alt="Enlarged Card">
                 <div id="modalText" class="modal-text"></div>
             </div>
         </div>
     </div>
+
+    <h2>Dynamic Data</h2>
+    <div id="data-display">Waiting for server response...</div>
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

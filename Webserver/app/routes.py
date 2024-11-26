@@ -8,10 +8,10 @@ last_data = None
 def index():
     return render_template('card-display.html')
 
-@app.route('/test', methods=['GET'])
-def test():
-    # 渲染页面
-    return render_template('test.html')
+# @app.route('/test', methods=['GET'])
+# def test():
+#     # 渲染页面
+#     return render_template('test.html')
 
 # 配置图片文件路径
 @app.route('/data/card/<filename>')

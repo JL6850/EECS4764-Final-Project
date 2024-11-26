@@ -120,6 +120,7 @@ body {
     font-weight: bold;
     z-index: 1;
     text-shadow: 1px 1px 3px black;
+    opacity: 0.5; /* 设置透明度为 50% */
 }
 
 .zone.monster {
