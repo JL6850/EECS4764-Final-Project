@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>游戏王卡牌区域布局</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            grid-gap: 5px;
+            width: 100%;
+            max-width: 1500px; /* 限制宽度确保正方形布局 */
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            color: white;
+        }
+        .zone {
+            position: relative;
+            width: 100%;
+            padding-top: 100%; /* 确保正方形比例 */
+            background-color: #ffffff;
+            border: 2px solid white;
+            text-align: center;
+            overflow: hidden;
+            border-radius: 5px;
+        }
+        .zone img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* 确保图片适应正方形区域 */
+            cursor: pointer;
+        }
+
+        /* 操作菜单样式 */
+        .menu {
+            display: none; /* 默认隐藏 */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: left;
+            z-index: 2;
+        }
+        .menu button {
+            display: block;
+            background: #444;
+            border: none;
+            color: white;
+            padding: 5px 10px;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .menu button:hover {
+            background: #666;
+        }
+
+        .zone:hover .menu {
+            display: block; /* 鼠标悬停时显示菜单 */
+        }
+
+        .modal {
+        display: none; /* 默认隐藏 */
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.8); /* 半透明黑色背景 */
+    }
+
+    .modal-content {
+        position: relative;
+        margin: auto;
+        top: 50%;
+        transform: translateY(-50%);
+        text-align: center;
+        color: white;
+    }
+
+    .modal img {
+        display: block;
+        margin: 0 auto;
+        max-width: 90%;
+        max-height: 70%;
+    }
+
+    .close {
+        position: absolute;
+        top: 20px;
+        right: 40px;
+        color: white;
+        font-size: 40px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+        .zone span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 1;
+            text-shadow: 1px 1px 3px black;
+        }
+        .zone.monster {
+            background-color: #ff6347; /* 怪兽区红色 */
+        }
+        .zone.spell {
+            background-color: #1e90ff; /* 魔法/陷阱区蓝色 */
+        }
+        .zone.extra-monster {
+            background-color: #9370db; /* 额外怪兽区紫色 */
+        }
+        .zone.extra-deck {
+            background-color: #8a2be2; /* 额外卡组区域深紫 */
+        }
+        .zone.deck {
+            background-color: #32cd32; /* 主卡组绿色 */
+        }
+        .zone.graveyard {
+            background-color: #8b4513; /* 墓地棕色 */
+        }
+        .zone.field {
+            background-color: #ffa500; /* 场地区域橙色 */
+        }
+        .zone.empty {
+            background-color: #ffffff; /* 空区域与背景一致 */
+        }
+    </style>
+</head>
+<body>
+    <h1>游戏王卡牌区域布局</h1>
+    <div class="game-board">
+        <!-- 额外怪兽区域 -->
+        <div class="zone extra-monster" data-id="1">
+            <img src="/data/card/2511.jpg" alt="怪兽卡" data-text="这是一张陷阱卡，用于防御敌人" onclick="openModal(this)">
+            <span>额外怪兽区</span>
+            <div class="menu">
+                <button onclick="viewCard(1)">放大查看</button>
+                <button onclick="addCardToZone(1)">放入卡牌</button>
+                <button onclick="discardCard(1)">丢弃卡牌</button>
+            </div>
+        </div>
+        <div class="zone empty"></div>
+        <div class="zone empty"></div>
+        <div class="zone extra-monster">
+
+            <span>额外怪兽区</span>
+        </div>
+        <div class="zone empty"></div>
+        <div class="zone empty"></div>
+        <div class="zone field">
+            <span>场地魔法区</span>
+        </div>
+
+        <!-- 怪兽区域 -->
+        <div class="zone monster">
+            <span>怪兽区</span>
+        </div>
+        <div class="zone monster">
+            <span>怪兽区</span>
+        </div>
+        <div class="zone monster">
+            <span>怪兽区</span>
+        </div>
+        <div class="zone monster">
+            <span>怪兽区</span>
+        </div>
+        <div class="zone monster">
+            <span>怪兽区</span>
+        </div>
+        <div class="zone empty"></div>
+        <div class="zone graveyard">
+            <span>墓地</span>
+        </div>
+
+        <!-- 魔法与陷阱区域 -->
+        <div class="zone spell">
+            <span>魔法/陷阱区</span>
+        </div>
+        <div class="zone spell">
+            <img src="/data/card/44818.jpg" alt="怪兽卡" data-text="这是一张强大的怪兽卡" onclick="openModal(this)">
+            <span>魔法/陷阱区</span>
+        </div>
+        <div class="zone spell">
+            <span>魔法/陷阱区</span>
+        </div>
+        <div class="zone spell">
+            <span>魔法/陷阱区</span>
+        </div>
+        <div class="zone spell">
+            <span>魔法/陷阱区</span>
+        </div>
+        <div class="zone empty"></div>
+        <div class="zone extra-deck">
+            <span>额外卡组</span>
+        </div>
+
+        <!-- 主卡组 -->
+        <div class="zone empty"></div>
+        <div class="zone empty"></div>
+        <div class="zone empty"></div>
+        <div class="zone empty"></div>
+        <div class="zone empty"></div>
+        <div class="zone empty"></div>
+        <div class="zone deck">
+            <span>主卡组</span>
+        </div>
+
+        <!-- 图片放大弹窗 -->
+    <div id="imageModal" class="modal">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <div class="modal-content">
+            <img id="modalImage" src="" alt="放大的卡牌">
+            <div id="modalText" class="modal-text"></div>
+        </div>
+    </div>
+
+    <script>
+         // 动态为每个 zone 分配 data-id 并生成菜单
+        document.addEventListener('DOMContentLoaded', () => {
+            const zones = document.querySelectorAll('.zone'); // 获取所有zone
+            zones.forEach((zone, index) => {
+                const id = index + 1; // 自动生成唯一ID
+                zone.setAttribute('data-id', id); // 设置data-id
+
+                // 创建菜单
+                const menu = document.createElement('div');
+                menu.className = 'menu';
+                menu.innerHTML = `
+                    <button onclick="viewCard(${id})">放大查看</button>
+                    <button onclick="addCardToZone(${id})">放入卡牌</button>
+                    <button onclick="discardCard(${id})">丢弃卡牌</button>
+                `;
+                zone.appendChild(menu); // 添加菜单到zone
+            });
+        });
+        // 根据区域ID打开放大弹窗
+        function viewCard(zoneId) {
+            const zone = document.querySelector(`.zone[data-id='${zoneId}']`);
+            if (zone) {
+                const img = zone.querySelector('img');
+                if (img) {
+                    const modal = document.getElementById('imageModal');
+                    const modalImage = document.getElementById('modalImage');
+                    const modalText = document.getElementById('modalText');
+                    modal.style.display = 'block';
+                    modalImage.src = img.src; // 设置大图为当前图片
+                    modalText.textContent = img.getAttribute('data-text'); // 显示描述文字
+                } else {
+                    alert(`区域 ${zoneId} 没有图片可查看！`);
+                }
+            } else {
+                alert(`找不到区域 ${zoneId}！`);
+            }
+        }
+
+        // 放入卡牌
+        function addCardToZone(zoneId) {
+            const zone = document.querySelector(`.zone[data-id='${zoneId}']`);
+            if (zone) {
+                const img = document.createElement('img');
+                img.src = '/data/card/62121.jpg'; // 替换为要放入的图片路径
+                img.alt = '新卡牌';
+
+                img.setAttribute('data-text', '这是一张新的卡牌');
+                img.style.cursor = 'pointer';
+                zone.appendChild(img);
+                alert(`卡牌已放入区域 ${zoneId}`);
+            }
+        }
+
+        // 丢弃卡牌
+        function discardCard(zoneId) {
+            const zone = document.querySelector(`.zone[data-id='${zoneId}']`);
+            if (zone) {
+                const img = zone.querySelector('img');
+                if (img) {
+                    zone.removeChild(img);
+                    alert(`区域 ${zoneId} 的卡牌已丢弃`);
+                } else {
+                    alert(`区域 ${zoneId} 没有卡牌可丢弃！`);
+                }
+            }
+        }
+
+        // 关闭弹窗
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.style.display = 'none';
+        }
+
+        // 点击弹窗外部关闭弹窗
+        window.onclick = function(event) {
+            const modal = document.getElementById('imageModal');
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        };
+    </script>
+    </div>
+</body>
+</html>

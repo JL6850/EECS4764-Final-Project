@@ -1,17 +1,27 @@
 from app import app
-from flask import jsonify, request, render_template, redirect, url_for
-
+from flask import jsonify, request, render_template, redirect, url_for, send_from_directory
+import os
 last_data = None
 
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('index.html')
+    return render_template('card.html')
 
 @app.route('/test', methods=['GET'])
 def test():
     # 渲染页面
     return render_template('test.html')
+
+# 配置图片文件路径
+@app.route('/data/card/<filename>')
+def card_images(filename):
+    base_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '../Data/Card'))
+    file_path = os.path.join(base_path, filename)
+    print(f"访问图片文件: {file_path}")
+    if not os.path.exists(file_path):
+        print("文件不存在！")
+    return send_from_directory(base_path, filename)
 
 @app.route('/api/data', methods=['GET'])
 def get_data():
