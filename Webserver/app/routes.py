@@ -6,7 +6,7 @@ last_data = None
 @app.route('/')
 @app.route('/index')
 def index():
-    return render_template('card.html')
+    return render_template('card-display.html')
 
 @app.route('/test', methods=['GET'])
 def test():
