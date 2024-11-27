@@ -18,6 +18,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function viewCard(zoneId) {
+    // 判断是否为墓地
+    if (zoneId === 14) {
+        viewGraveyard(); // 如果是墓地，调用查看墓地的逻辑
+        return;
+    }
+
+
     const zone = document.querySelector(`.zone[data-id='${zoneId}']`);
     if (zone) {
         const img = zone.querySelector('img');
@@ -35,6 +42,30 @@ function viewCard(zoneId) {
         alert(`找不到区域 ${zoneId}！`);
     }
 }
+
+// 查看墓地中的所有卡牌
+function viewGraveyard() {
+    const modal = document.getElementById('imageModal');
+    const modalContent = document.getElementById('modalContent');
+    //modalContent.innerHTML = ''; // 清空弹窗内容
+
+    if (graveyardCards.length === 0) {
+        // 如果墓地为空，显示提示信息
+        modalContent.innerHTML = '<p>墓地为空！</p>';
+    } else {
+        // 动态添加墓地中的所有卡牌
+        graveyardCards.forEach((cardSrc, index) => {
+            const cardImg = document.createElement('img');
+            cardImg.src = cardSrc; // 显示正面图片路径
+            cardImg.alt = `Graveyard Card ${index + 1}`;
+            cardImg.className = 'graveyard-card'; // 添加样式
+            modalContent.appendChild(cardImg);
+        });
+    }
+
+    modal.style.display = 'block'; // 显示弹窗
+}
+
 
 function addCardToZone(zoneId) {
     const zone = document.querySelector(`.zone[data-id='${zoneId}']`);
@@ -125,11 +156,13 @@ async function fetchLatestData() {
         const result = await response.json();
 
         // 解构嵌套的 data 属性
-        if (result.data) {
+        if (JSON.stringify(result.data) !== JSON.stringify(lastData)) {
+            console.log("Old data:", lastData); // Debug log
+            lastData = result.data
             console.log("New data received:", result.data); // Debug log
             handleAction(result.data); // 将解构后的 data 传递给 handleAction
         } else {
-            console.error("Invalid JSON format:", result);
+            console.error("Invalid JSON format or Old message received:", result);
         }
     } catch (error) {
         console.error("Error fetching data:", error.message);
@@ -183,16 +216,43 @@ function summonCard(location, card_id) {
     }
 }
 
+
+const graveyardCards = []; // 用于存储墓地卡牌的正面路径
+
 function deleteCard(location) {
     const zones = document.querySelectorAll('.zone'); // 获取所有区域
     const targetZone = zones[location - 1]; // 获取指定区域（1-based index）
+    const graveyard = document.querySelector('.graveyard'); // 获取墓地区域
+
+    if (!graveyard) {
+        console.error("Graveyard zone not found.");
+        return;
+    }
 
     if (targetZone) {
-        clearCardInZone(targetZone); // 仅卡牌
+        const card = targetZone.querySelector('.card'); // 查找卡牌元素
+        if (card) {
+            const cardFront = card.src; // 获取卡牌正面图片路径
+            graveyardCards.push(cardFront); // 将正面图片路径添加到墓地数组
+            targetZone.removeChild(card); // 从当前区域移除卡牌
+
+            // 墓地中显示统一的背面图片
+            //graveyard.innerHTML = ''; // 可选：根据需求清空墓地区域
+            const graveCard = document.createElement('img');
+            graveCard.src = '/data/card/1.jpg'; // 假设背面显示 1.jpg
+            graveCard.alt = 'Graveyard Card';
+            graveCard.className = 'card grave-card'; // 添加类名
+            graveyard.appendChild(graveCard);
+
+            console.log(`Card discarded from location ${location} and moved to Graveyard.`);
+        } else {
+            console.log(`No card found in location ${location} to discard.`);
+        }
     } else {
         console.error(`Invalid location: ${location}`);
     }
 }
+
 
 
 
