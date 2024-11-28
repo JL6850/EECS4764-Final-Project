@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         menu.innerHTML = `
             <button onclick="viewCard(${id})">放大查看</button>
             <button onclick="addCardToZone(${id})">放入卡牌</button>
-            <button onclick="discardCard(${id})">丢弃卡牌</button>
+            <button onclick="deleteCard(${id})">丢弃卡牌</button>
             <button onclick="setAttackState(${id})">攻击状态</button>
             <button onclick="setDefenseState(${id})">防御状态</button>
         `;
@@ -43,29 +43,34 @@ function viewCard(zoneId) {
     }
 }
 
-// 查看墓地中的所有卡牌
 function viewGraveyard() {
     const modal = document.getElementById('imageModal');
-    const modalContent = document.getElementById('modalContent');
-    //modalContent.innerHTML = ''; // 清空弹窗内容
+    const modalText = document.getElementById('modalText');
+
+    // 清空弹窗内容
+    modalText.innerHTML = '';
 
     if (graveyardCards.length === 0) {
         // 如果墓地为空，显示提示信息
-        modalContent.innerHTML = '<p>墓地为空！</p>';
+        modalText.innerHTML = '<p class="empty-message">Graveyard is empty!</p>';
     } else {
+        const cardContainer = document.createElement('div');
+        cardContainer.className = 'card-container'; // 使用网格布局
+
         // 动态添加墓地中的所有卡牌
         graveyardCards.forEach((cardSrc, index) => {
             const cardImg = document.createElement('img');
             cardImg.src = cardSrc; // 显示正面图片路径
             cardImg.alt = `Graveyard Card ${index + 1}`;
             cardImg.className = 'graveyard-card'; // 添加样式
-            modalContent.appendChild(cardImg);
+            cardContainer.appendChild(cardImg);
         });
+
+        modalText.appendChild(cardContainer);
     }
 
     modal.style.display = 'block'; // 显示弹窗
 }
-
 
 function addCardToZone(zoneId) {
     const zone = document.querySelector(`.zone[data-id='${zoneId}']`);
@@ -77,15 +82,20 @@ function addCardToZone(zoneId) {
             const file = event.target.files[0];
             if (file) {
                 const img = document.createElement('img');
+                const fileNameWithExtension = file.name; // 完整文件名，例如 "43227.jpg"
+                const fileName = fileNameWithExtension.split('.')[0]; // 提取数字部分，去掉后缀
                 img.src = URL.createObjectURL(file);
                 img.alt = '新卡牌';
                 img.setAttribute('data-text', '这是一张新的卡牌');
                 img.style.cursor = 'pointer';
+                img.className = 'img'; // 为新卡牌添加样式类
                 zone.appendChild(img);
                 // alert(`卡牌已放入区域 ${zoneId}`);
+                //summonCard(location=zoneId, fileName)
             }
         });
         fileInput.click();
+
     } else {
         alert(`未找到区域 ${zoneId}`);
     }
@@ -208,7 +218,7 @@ function summonCard(location, card_id) {
         const card = document.createElement('img');
         card.src = `/data/card/${card_id}.jpg`; // 假设卡牌图片路径
         card.alt = `Card ${card_id}`;
-        card.className = 'card'; // 为新卡牌添加样式类
+        card.className = 'img'; // 为新卡牌添加样式类
 
         targetZone.appendChild(card); // 将新卡牌插入到区域
     } else {
@@ -220,6 +230,7 @@ function summonCard(location, card_id) {
 const graveyardCards = []; // 用于存储墓地卡牌的正面路径
 
 function deleteCard(location) {
+
     const zones = document.querySelectorAll('.zone'); // 获取所有区域
     const targetZone = zones[location - 1]; // 获取指定区域（1-based index）
     const graveyard = document.querySelector('.graveyard'); // 获取墓地区域
@@ -228,9 +239,8 @@ function deleteCard(location) {
         console.error("Graveyard zone not found.");
         return;
     }
-
     if (targetZone) {
-        const card = targetZone.querySelector('.card'); // 查找卡牌元素
+        const card = targetZone.querySelector('.img'); // 查找卡牌元素
         if (card) {
             const cardFront = card.src; // 获取卡牌正面图片路径
             graveyardCards.push(cardFront); // 将正面图片路径添加到墓地数组
@@ -247,6 +257,7 @@ function deleteCard(location) {
             console.log(`Card discarded from location ${location} and moved to Graveyard.`);
         } else {
             console.log(`No card found in location ${location} to discard.`);
+            console.log(`Moving card from zone: ${targetZone.className || targetZone.id || 'Unknown Zone'} to the graveyard.`);
         }
     } else {
         console.error(`Invalid location: ${location}`);
