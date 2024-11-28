@@ -63,6 +63,12 @@ function viewGraveyard() {
             cardImg.src = cardSrc; // 显示正面图片路径
             cardImg.alt = `Graveyard Card ${index + 1}`;
             cardImg.className = 'graveyard-card'; // 添加样式
+
+            // 添加点击事件，显示放大的图片
+            cardImg.addEventListener('click', () => {
+                showLargeImage(cardSrc, `Graveyard Card ${index + 1}`);
+            });
+
             cardContainer.appendChild(cardImg);
         });
 
@@ -71,6 +77,21 @@ function viewGraveyard() {
 
     modal.style.display = 'block'; // 显示弹窗
 }
+
+
+function showLargeImage(imageSrc, description) {
+    const modal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const modalCaption = document.getElementById('modalCaption');
+
+    // 设置图片和描述
+    modalImage.src = imageSrc;
+    modalCaption.textContent = description;
+
+    // 显示弹窗并添加动画效果
+    modal.classList.add('show');
+}
+
 
 function addCardToZone(zoneId) {
     const zone = document.querySelector(`.zone[data-id='${zoneId}']`);
