@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E4764-Final-Project: Yu-Gi-Oh Card Layout</title>
+    <title>Yu-Gi-Oh Card Layout</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <h1>E4764-Final-Project: Yu-Gi-Oh Card Layout</h1>
+    <h1>Yu-Gi-Oh Card Layout</h1>
     <div class="game-board">
         <div class="zone empty"></div>
         <div class="zone empty"></div>
@@ -85,24 +85,6 @@
                 </div>
             </div>
         </div>
-
-        <div id="graveyardModal" class="modal">
-            <span class="close" onclick="closeGraveyardModal()">&times;</span>
-            <div class="modal-content">
-                <div class="modal-body">
-                    <!-- 左侧卡牌容器 -->
-                    <div id="graveyardCardContainer" class="card-container">
-                        <!-- 动态生成墓地卡牌 -->
-                    </div>
-                    <!-- 右侧放大卡牌容器 -->
-                    <div id="graveyardLargeImageContainer" class="large-image-container">
-                        <p class="empty-message">Click a card to view it here!</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
     </div>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
