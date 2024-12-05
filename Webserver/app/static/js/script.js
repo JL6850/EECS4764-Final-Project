@@ -5,6 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
         const id = index + 1;
         zone.setAttribute('data-id', id);
 
+        // 找到当前 .zone 下的 <span> 或创建新的 <span> 元素
+        let span = zone.querySelector('span');
+        if (!span) {
+            // 如果没有 <span>，创建一个新的
+            span = document.createElement('span');
+            zone.appendChild(span);
+        }
+
+        // 显示 ID
+        span.textContent += ` (ID: ${id})`;
         const menu = document.createElement('div');
         menu.className = 'menu';
         menu.innerHTML = `
@@ -213,16 +223,102 @@ async function fetchLatestData() {
 // Function to handle different actions
 function handleAction(data) {
     console.log("Received data in handleAction:", data); // Print the entire JSON data
-    const { action, location, card_id } = data;
+    // const { action, location, card_id } = data;
+    let { action, card_id, ...locations } = data;
+    // Initialize location variables
+    let location1 = null;
+    const location0 = [];
 
-    switch (action) {
-        case "Summon":
-            summonCard(location, card_id);
+    // Extract locations
+    Object.entries(locations).forEach(([key, value]) => {
+        if (key.startsWith("location_")) {
+            const number = parseInt(key.split("_")[1], 10); // Extract the number part
+            if (value === 1) {
+                location1 = number; // Assign to location1
+            } else if (value === 0) {
+                location0.push(number); // Add to location0 array
+            }
+        }
+    });
+
+
+    console.log(`location1=${location1}`);
+    console.log(`location0=[${location0.join(", ")}]`);
+    console.log(action);
+    // Handle action
+    switch (action) { // Normalize action format
+        case "normal_summon":
+            normal_summon(location1, card_id); // Use location1 for "Normal Summon"
             break;
 
-        case "Discard":
-            deleteCard(location, card_id);
+        case "tribute_summon":
+            tribute_summon(location1, location0, card_id)
+            break
+
+        case "special_summon_in_attack_position":
+            normal_summon(location1, card_id)
+            break
+
+        case "link_summon":
+            tribute_summon(location1, location0, card_id)
+            break
+
+        case "synchro_summon_in_attack_position":
+            tribute_summon(location1, location0, card_id)
+            break
+
+        case "set":
+            normal_summon(location1, card_id=1)
+            break
+
+        case "flip_summon":
+            normal_summon(location1, card_id)
+            break
+
+        case "reverse":
+            normal_summon(location1, card_id)
+            break
+
+        case "discard":
+            location0.forEach(loc => deleteCard(loc, card_id)); // Use all location0 values for "Discard"
             break;
+
+        case "banish":
+            location0.forEach(loc => banish(loc))
+            break
+
+        case "destroy":
+            location0.forEach(loc => banish(loc))
+            break
+
+        case "return_to_hand":
+            location0.forEach(loc => banish(loc))
+            break
+
+        case "return_to_deck":
+            location0.forEach(loc => banish(loc))
+            break
+
+        case "mill":
+
+            break
+
+        case "activate":
+            normal_summon(location1, card_id)
+            break
+
+        case "change_position_to_attack_position":
+            setAttackState(location1)
+            break
+
+        case "change_position_to_defence_position":
+            setDefenseState(location1)
+            break
+
+        case "send_to":
+            tribute_summon(location1, location0, card_id)
+            break
+
         // Add more cases for other actions
         default:
             console.error("Unknown action:", action);
@@ -238,7 +334,7 @@ function clearCardInZone(targetZone) {
     }
 }
 
-function summonCard(location, card_id) {
+function normal_summon(location, card_id) {
     const zones = document.querySelectorAll('.zone'); // 获取所有区域
     const targetZone = zones[location - 1]; // 获取指定区域（1-based index）
 
@@ -256,6 +352,28 @@ function summonCard(location, card_id) {
         console.error(`Invalid location: ${location}`);
     }
 }
+
+function tribute_summon(location1, location0, card_id){
+    // Perform normal summon
+    normal_summon(location1, card_id);
+
+    // Loop through location0 array and delete cards
+    for (const loc of location0) {
+        deleteCard(loc);
+    }
+}
+
+function banish(location){
+    const zones = document.querySelectorAll('.zone'); // 获取所有区域
+    const targetZone = zones[location - 1]; // 获取指定区域（1-based index）
+
+    if (targetZone) {
+        clearCardInZone(targetZone); // 仅移除旧卡牌
+    } else {
+        console.error(`Invalid location: ${location}`);
+    }
+}
+
 
 
 const graveyardCards = []; // 用于存储墓地卡牌的正面路径
@@ -299,7 +417,7 @@ function deleteCard(location) {
 
 
 // Automatically refresh data every 2 seconds
-setInterval(fetchLatestData, 2000);
+setInterval(fetchLatestData, 1000);
 
 // Fetch data immediately after the page loads
 document.addEventListener('DOMContentLoaded', fetchLatestData);

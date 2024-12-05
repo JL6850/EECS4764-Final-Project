@@ -1,21 +1,36 @@
+// 初始化页面和功能版
 document.addEventListener('DOMContentLoaded', () => {
     const zones = document.querySelectorAll('.zone');
     zones.forEach((zone, index) => {
         const id = index + 1;
         zone.setAttribute('data-id', id);
 
+        // 找到当前 .zone 下的 <span> 或创建新的 <span> 元素
+        let span = zone.querySelector('span');
+        if (!span) {
+            // 如果没有 <span>，创建一个新的
+            span = document.createElement('span');
+            zone.appendChild(span);
+        }
+
+        // 显示 ID
+        span.textContent += ` (ID: ${id})`;
         const menu = document.createElement('div');
         menu.className = 'menu';
         menu.innerHTML = `
-            <button onclick="viewCard(${id})">放大查看</button>
-            <button onclick="addCardToZone(${id})">放入卡牌</button>
-            <button onclick="deleteCard(${id})">丢弃卡牌</button>
-            <button onclick="setAttackState(${id})">攻击状态</button>
-            <button onclick="setDefenseState(${id})">防御状态</button>
+            <button onclick="viewCard(${id})">View Card</button>
+            <button onclick="addCardToZone(${id})">Add to Zone</button>
+            <button onclick="deleteCard(${id})">Discard Card</button>
+            <button onclick="setAttackState(${id})">Attack Mode</button>
+            <button onclick="setDefenseState(${id})">Defense Mode</button>
         `;
         zone.appendChild(menu);
     });
 });
+
+function getZoneById(zoneId) {
+    return document.querySelector(`.zone[data-id='${zoneId}']`);
+}
 
 function viewCard(zoneId) {
     // 判断是否为墓地
@@ -23,8 +38,7 @@ function viewCard(zoneId) {
         viewGraveyard(); // 如果是墓地，调用查看墓地的逻辑
         return;
     }
-
-    const zone = document.querySelector(`.zone[data-id='${zoneId}']`);
+    const zone = getZoneById(zoneId);
     if (zone) {
         const img = zone.querySelector('img');
         if (img) {
@@ -35,48 +49,12 @@ function viewCard(zoneId) {
             modalImage.src = img.src;
             modalText.textContent = img.getAttribute('data-text');
         } else {
-            alert(`区域 ${zoneId} 没有图片可查看！`);
+            alert(`No image available to view in zone ${zoneId}!`);
         }
     } else {
-        alert(`找不到区域 ${zoneId}！`);
+        alert(`Zone ${zoneId} not found!`);
     }
 }
-
-function viewGraveyard() {
-    const modal = document.getElementById('imageModal');
-    const modalText = document.getElementById('modalText');
-
-    // 清空弹窗内容
-    modalText.innerHTML = '';
-
-    if (graveyardCards.length === 0) {
-        // 如果墓地为空，显示提示信息
-        modalText.innerHTML = '<p class="empty-message">Graveyard is empty!</p>';
-    } else {
-        const cardContainer = document.createElement('div');
-        cardContainer.className = 'card-container'; // 使用网格布局
-
-        // 动态添加墓地中的所有卡牌
-        graveyardCards.forEach((cardSrc, index) => {
-            const cardImg = document.createElement('img');
-            cardImg.src = cardSrc; // 显示正面图片路径
-            cardImg.alt = `Graveyard Card ${index + 1}`;
-            cardImg.className = 'graveyard-card'; // 添加样式
-
-            // 添加点击事件，显示放大的图片
-            cardImg.addEventListener('click', () => {
-                showLargeImage(cardSrc, `Graveyard Card ${index + 1}`);
-            });
-
-            cardContainer.appendChild(cardImg);
-        });
-
-        modalText.appendChild(cardContainer);
-    }
-
-    modal.style.display = 'block'; // 显示弹窗
-}
-
 
 function showLargeImage(imageSrc, description) {
     const modal = document.getElementById('imageModal');
@@ -91,54 +69,48 @@ function showLargeImage(imageSrc, description) {
     modal.classList.add('show');
 }
 
-function viewGraveyard() {
-    const modal = document.getElementById('imageModal');
-    const modalText = document.getElementById('modalText');
 
-    // 清空弹窗内容
-    modalText.innerHTML = '';
+function viewGraveyard() {
+    const graveyardModal = document.getElementById('graveyardModal');
+    const cardContainer = document.getElementById('graveyardCardContainer');
+    const largeImageContainer = document.getElementById('graveyardLargeImageContainer');
+
+    // 清空内容
+    cardContainer.innerHTML = '';
+    largeImageContainer.innerHTML = '<p class="empty-message">Click a card to view it here!</p>';
 
     if (graveyardCards.length === 0) {
         // 如果墓地为空，显示提示信息
-        modalText.innerHTML = '<p class="empty-message">Graveyard is empty!</p>';
+        cardContainer.innerHTML = '<p class="empty-message">Graveyard is empty!</p>';
     } else {
-        // 创建左侧卡牌容器
-        const cardContainer = document.createElement('div');
-        cardContainer.className = 'card-container'; // 使用网格布局显示卡牌
-
-        // 创建右侧显示放大卡牌容器
-        const largeImageContainer = document.createElement('div');
-        largeImageContainer.className = 'large-image-container'; // 右侧容器样式
-        largeImageContainer.innerHTML = '<p class="empty-message">Click a card to view it here!</p>';
-
-        // 动态添加墓地中的所有卡牌到左侧容器
+        // 动态生成墓地卡牌
         graveyardCards.forEach((cardSrc, index) => {
             const cardImg = document.createElement('img');
-            cardImg.src = cardSrc; // 显示正面图片路径
+            cardImg.src = cardSrc;
             cardImg.alt = `Graveyard Card ${index + 1}`;
-            cardImg.className = 'graveyard-card'; // 添加样式
+            cardImg.className = 'graveyard-card';
 
-            // 添加点击事件，显示放大的图片到右侧
+            // 点击卡牌显示放大图
             cardImg.addEventListener('click', () => {
                 largeImageContainer.innerHTML = ''; // 清空右侧内容
                 const largeImg = document.createElement('img');
                 largeImg.src = cardSrc;
                 largeImg.alt = `Graveyard Card ${index + 1}`;
-                largeImg.className = 'large-card'; // 添加放大卡牌样式
                 largeImageContainer.appendChild(largeImg);
             });
 
             cardContainer.appendChild(cardImg);
         });
-
-        // 将左侧卡牌和右侧放大卡牌容器加入弹窗
-        modalText.appendChild(cardContainer);
-        modalText.appendChild(largeImageContainer);
     }
 
-    modal.style.display = 'block'; // 显示弹窗
+    // 显示墓地模态框
+    graveyardModal.style.display = 'block';
 }
 
+function closeGraveyardModal() {
+    const graveyardModal = document.getElementById('graveyardModal');
+    graveyardModal.style.display = 'none';
+}
 
 
 function addCardToZone(zoneId) {
@@ -251,16 +223,58 @@ async function fetchLatestData() {
 // Function to handle different actions
 function handleAction(data) {
     console.log("Received data in handleAction:", data); // Print the entire JSON data
-    const { action, location, card_id } = data;
+    // const { action, location, card_id } = data;
+    let { action, card_id, ...locations } = data;
+    // Initialize location variables
+    let location1 = null;
+    const location0 = [];
 
-    switch (action) {
-        case "Summon":
-            summonCard(location, card_id);
+    // Extract locations
+    Object.entries(locations).forEach(([key, value]) => {
+        if (key.startsWith("location_")) {
+            const number = parseInt(key.split("_")[1], 10); // Extract the number part
+            if (value === 1) {
+                location1 = number; // Assign to location1
+            } else if (value === 0) {
+                location0.push(number); // Add to location0 array
+            }
+        }
+    });
+
+
+    console.log(`location1=${location1}`);
+    console.log(`location0=[${location0.join(", ")}]`);
+    console.log(action);
+    // Handle action
+    switch (action) { // Normalize action format
+        case "normal_summon":
+            normal_summon(location1, card_id); // Use location1 for "Normal Summon"
             break;
 
-        case "Discard":
-            deleteCard(location, card_id);
+        case "tribute_summon":
+            tribute_summon(location1, location0, card_id)
+            break
+
+        case "special_summon_in_attack_position":
+            normal_summon(location1, card_id)
+            break
+
+        case "link_summon":
+            tribute_summon(location1, location0, card_id)
+            break
+
+        case "synchro_summon_in_attack_position":
+            tribute_summon(location1, location0, card_id)
+            break
+
+        case "set":
+            normal_summon(location1, card_id)
+            break
+
+        case "discard":
+            location0.forEach(loc => deleteCard(loc, card_id)); // Use all location0 values for "Discard"
             break;
+
         // Add more cases for other actions
         default:
             console.error("Unknown action:", action);
@@ -276,7 +290,7 @@ function clearCardInZone(targetZone) {
     }
 }
 
-function summonCard(location, card_id) {
+function normal_summon(location, card_id) {
     const zones = document.querySelectorAll('.zone'); // 获取所有区域
     const targetZone = zones[location - 1]; // 获取指定区域（1-based index）
 
@@ -294,6 +308,19 @@ function summonCard(location, card_id) {
         console.error(`Invalid location: ${location}`);
     }
 }
+
+function tribute_summon(location1, location0, card_id){
+    // Perform normal summon
+    normal_summon(location1, card_id);
+
+    // Loop through location0 array and delete cards
+    for (const loc of location0) {
+        deleteCard(loc);
+    }
+}
+
+
+
 
 
 const graveyardCards = []; // 用于存储墓地卡牌的正面路径
@@ -337,7 +364,7 @@ function deleteCard(location) {
 
 
 // Automatically refresh data every 2 seconds
-setInterval(fetchLatestData, 2000);
+setInterval(fetchLatestData, 1000);
 
 // Fetch data immediately after the page loads
 document.addEventListener('DOMContentLoaded', fetchLatestData);
