@@ -161,7 +161,7 @@ function setAttackState(zoneId) {
         const img = zone.querySelector('img');
         if (img) {
             img.style.transform = 'rotate(0deg)';
-            // alert(`区域 ${zoneId} 设置为攻击状态`);
+            console.log(`区域 ${zoneId} 设置为攻击状态`);
         } else {
             alert(`区域 ${zoneId} 没有卡牌`);
         }
@@ -174,7 +174,7 @@ function setDefenseState(zoneId) {
         const img = zone.querySelector('img');
         if (img) {
             img.style.transform = 'rotate(90deg)';
-            // alert(`区域 ${zoneId} 设置为防御状态`);
+            console.log(`区域 ${zoneId} 设置为防御状态`);
         } else {
             alert(`区域 ${zoneId} 没有卡牌`);
         }
@@ -300,15 +300,15 @@ function handleAction(data) {
             break
 
         case "discard":
-            location0.forEach(loc => deleteCard(loc, card_id)); // Use all location0 values for "Discard"
-            break;
+            location0.forEach(loc => deleteCard(loc, card_id))// Use all location0 values for "Discard"
+            break
 
         case "banish":
             location0.forEach(loc => banish(loc))
             break
 
         case "destroy":
-            location0.forEach(loc => banish(loc))
+            location0.forEach(loc => deleteCard(loc, card_id))
             break
 
         case "return_to_hand":
