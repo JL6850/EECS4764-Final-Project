@@ -259,7 +259,7 @@ function handleAction(data) {
             normal_summon(location1, card_id)
             break
 
-        case "special_summon_in_defence_postion":
+        case "special_summon_in_defense_postion":
             normal_summon(location1, card_id)
             setDefenseState(location1)
             break
@@ -268,7 +268,7 @@ function handleAction(data) {
             normal_summon(location1, card_id)
             break
 
-        case "xyz_summon_in_defence_postion":
+        case "xyz_summon_in_defense_postion":
             normal_summon(location1, card_id)
             setDefenseState(location1)
             break
@@ -282,7 +282,7 @@ function handleAction(data) {
             tribute_summon(location1, location0, card_id)
             break
 
-        case "synchro_summon_in_defence_position":
+        case "synchro_summon_in_defense_position":
             tribute_summon(location1, location0, card_id)
             setDefenseState(location1)
             break
@@ -331,7 +331,7 @@ function handleAction(data) {
             setAttackState(location1)
             break
 
-        case "change_position_to_defence_position":
+        case "change_position_to_defense_position":
             setDefenseState(location1)
             break
 
