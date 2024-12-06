@@ -259,7 +259,7 @@ function handleAction(data) {
             normal_summon(location1, card_id)
             break
 
-        case "special_summon_in_defense_postion":
+        case "special_summon_in_defense_position":
             normal_summon(location1, card_id)
             console.log("finish summon")
             setDefenseState(location1)
