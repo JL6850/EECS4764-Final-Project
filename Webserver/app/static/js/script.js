@@ -292,11 +292,12 @@ function handleAction(data) {
         case "set":
             if((location1 >= 16 && location1 <= 20) || location1 == 8){
                 normal_summon(location1, card_id=1)
-                setDefenseState(location1)
+                
             }
                 
             else{
                 normal_summon(location1, card_id=1)
+                setDefenseState(location1)
             }
                 
             break
