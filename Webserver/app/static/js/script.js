@@ -259,12 +259,32 @@ function handleAction(data) {
             normal_summon(location1, card_id)
             break
 
+        case "special_summon_in_defence_postion":
+            normal_summon(location1, card_id)
+            setDefenseState(location1)
+            break
+
+        case "xyz_summon_in_attack_position":
+            normal_summon(location1, card_id)
+            break
+
+        case "xyz_summon_in_defence_postion":
+            normal_summon(location1, card_id)
+            setDefenseState(location1)
+            break
+
+
         case "link_summon":
             tribute_summon(location1, location0, card_id)
             break
 
         case "synchro_summon_in_attack_position":
             tribute_summon(location1, location0, card_id)
+            break
+
+        case "synchro_summon_in_defence_position":
+            tribute_summon(location1, location0, card_id)
+            setDefenseState(location1)
             break
 
         case "set":
