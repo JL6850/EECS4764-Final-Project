@@ -373,6 +373,7 @@ function normal_summon(location, card_id) {
     } else {
         console.error(`Invalid location: ${location}`);
     }
+    console.log("finish summon")
 }
 
 function tribute_summon(location1, location0, card_id){
