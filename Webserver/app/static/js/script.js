@@ -327,11 +327,11 @@ function handleAction(data) {
             normal_summon(location1, card_id)
             break
 
-        case "change_position_to_attack_position":
+        case "change_to_attack_position":
             setAttackState(location1)
             break
 
-        case "change_position_to_defense_position":
+        case "change_to_defense_position":
             setDefenseState(location1)
             break
 
