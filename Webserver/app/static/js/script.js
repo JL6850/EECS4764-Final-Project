@@ -316,6 +316,7 @@ function handleAction(data) {
 
         case "discard":
             normal_summon(1, card_id)
+            location0.append(1)
             location0.forEach(loc => deleteCard(loc, card_id))// Use all location0 values for "Discard"
             break
 
