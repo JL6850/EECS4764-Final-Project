@@ -259,6 +259,11 @@ function handleAction(data) {
             normal_summon(location1, card_id)
             break
 
+        case "move_to":
+            location0.forEach(loc => banish(loc, card_id))
+            normal_summon(location1, card_id)
+            break
+
         case "special_summon_in_attack_position":
             location0.forEach(loc => deleteCard(loc, card_id))
             normal_summon(location1, card_id)
