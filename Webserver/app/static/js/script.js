@@ -315,6 +315,7 @@ function handleAction(data) {
             break
 
         case "discard":
+            normal_summon(1, card_id)
             location0.forEach(loc => deleteCard(loc, card_id))// Use all location0 values for "Discard"
             break
 
@@ -426,21 +427,24 @@ function deleteCard(location) {
     }
     if (targetZone) {
         const card = targetZone.querySelector('.img'); // 查找卡牌元素
-        
-        const cardFront = card.src; // 获取卡牌正面图片路径
-        graveyardCards.push(cardFront); // 将正面图片路径添加到墓地数组
-        targetZone.removeChild(card); // 从当前区域移除卡牌
+        if (card) {
+            const cardFront = card.src; // 获取卡牌正面图片路径
+            graveyardCards.push(cardFront); // 将正面图片路径添加到墓地数组
+            targetZone.removeChild(card); // 从当前区域移除卡牌
 
-        // 墓地中显示统一的背面图片
-        //graveyard.innerHTML = ''; // 可选：根据需求清空墓地区域
-        const graveCard = document.createElement('img');
-        graveCard.src = '/data/card/1.jpg'; // 假设背面显示 1.jpg
-        graveCard.alt = 'Graveyard Card';
-        graveCard.className = 'card grave-card'; // 添加类名
-        graveyard.appendChild(graveCard);
+            // 墓地中显示统一的背面图片
+            //graveyard.innerHTML = ''; // 可选：根据需求清空墓地区域
+            const graveCard = document.createElement('img');
+            graveCard.src = '/data/card/1.jpg'; // 假设背面显示 1.jpg
+            graveCard.alt = 'Graveyard Card';
+            graveCard.className = 'card grave-card'; // 添加类名
+            graveyard.appendChild(graveCard);
 
-        console.log(`Card discarded from location ${location} and moved to Graveyard.`);
-        
+            console.log(`Card discarded from location ${location} and moved to Graveyard.`);
+        } else {
+            console.log(`No card found in location ${location} to discard.`);
+            console.log(`Moving card from zone: ${targetZone.className || targetZone.id || 'Unknown Zone'} to the graveyard.`);
+        }
     } else {
         console.error(`Invalid location: ${location}`);
     }
