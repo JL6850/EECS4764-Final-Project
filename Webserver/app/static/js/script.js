@@ -260,10 +260,12 @@ function handleAction(data) {
             break
 
         case "special_summon_in_attack_position":
+            location0.forEach(loc => banish(loc))
             normal_summon(location1, card_id)
             break
 
         case "special_summon_in_defense_position":
+            location0.forEach(loc => banish(loc))
             normal_summon(location1, card_id)
             console.log("finish summon")
             setDefenseState(location1)
