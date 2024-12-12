@@ -363,6 +363,11 @@ function handleAction(data) {
             tribute_summon(location1, location0, card_id)
             break
 
+        case "video_check":
+            video_check()
+            break
+
+
         // Add more cases for other actions
         default:
             console.error("Unknown action:", action);
