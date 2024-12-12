@@ -364,7 +364,7 @@ function handleAction(data) {
             break
 
         case "video_check":
-            video_check()
+            video_check(card_id)
             break
 
 

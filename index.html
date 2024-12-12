@@ -24,7 +24,7 @@
 					<!-- Logo -->
 						<div id="logo">
 							<!-- <span class="image avatar48"><img src="images/avatar.jpg" alt="" /></span> -->
-							<h1 id="title">Smart Yu-Gi-Oh Play mat</h1>
+							<h1 id="title">Smart Yu-Gi-Oh Play Mat</h1>
 							<p>Columbia University <br>
 								EECS E4764 Fall'24 Internet of Things<br>
 								Intelligent and Connected Systems<br>
@@ -84,9 +84,9 @@
 
 								<iframe width="560" height="315" src="https://www.youtube.com/embed/_AlcRoqS65E" frameborder="0" allowfullscreen></iframe>
 
-								<h2 class="alt">Smart Yu-Gi-Oh Play mat</h2>
-								<p>Project Wonderland is a blah blah blah</p>
-								<p>(Abstract here)</p>
+								<h2 class="alt">Smart Yu-Gi-Oh! Play Mat</h2>
+								<p>The Smart Yu-Gi-Oh! Play Mat is an innovative system combining hardware and software to enable Yu-Gi-Oh! players in different locations to duel using real cards over the internet. This intelligent play mat leverages light sensors, microphones, and cameras to capture and transmit real-time data to a dedicated website, providing a seamless and immersive remote dueling experience.</p>
+								<p>Players can place their cards on the play mat, and the system detects their placement and tracks game states. The platform supports voice commands, allowing players to perform various in-game actions through a combination of physical card movements and verbal instructions. The website interface reflects all game changes in real time, ensuring both players have synchronized gameplay.</p>								
 
 
 							<footer>
@@ -103,10 +103,29 @@
 							<header>
 								<h2>Motivation</h2>
 							</header>
-
-							<p align="left">You can choose to use photos or figures to help</p>
-
-
+							
+							<div style="display: flex; align-items: flex-start;">
+								<!-- 左侧文本内容 -->
+								<div style="flex: 2; padding-right: 20px;">
+									<p align="left">
+										Yu-Gi-Oh! is a card game deeply rooted in physical gameplay, where players traditionally meet in person to duel. While this offers an engaging social experience, it often requires prior scheduling and face-to-face interactions, which can limit accessibility for players separated by distance.
+									</p>
+									<p align="left">
+										With advancements in internet technology, video dueling has emerged as an alternative, allowing players to battle remotely. However, traditional video dueling presents significant challenges. Firstly, to protect their cards, players often use multiple protective sleeves, and Yu-Gi-Oh! cards themselves feature glossy finishes. This combination results in severe glare under camera conditions, making it difficult to clearly see the opponent’s cards. Secondly, players cannot physically pick up an opponent’s cards to read their effects. Instead, they must rely on searching a database to verify card details, which is time-consuming and disrupts the flow of the game.
+									</p>
+								</div>
+							
+								<!-- 右侧图片 -->
+								<div style="flex: 1; text-align: center;">
+									<img src="images/motivation-example.jpg" alt="Yu-Gi-Oh! Example" style="max-width: 100%; border: 1px solid #ccc; border-radius: 8px;">
+									<p style="font-size: 12px; color: #666;">Figure: Example of Yu-Gi-Oh! dueling</p>
+								</div>
+							</div>
+							
+							<p align="left">
+								Our Smart Yu-Gi-Oh! Play Mat seeks to address these challenges by combining physical gameplay with digital enhancements, creating a seamless, transparent, and enjoyable dueling experience for players.
+							</p>
+							
 
 						</div>
 					</section>
@@ -119,8 +138,7 @@
 								<h2>System</h2>
 							</header>
 
-							<p align="left">Remember to use combination of descriptions, photos, and figures</p>
-
+							
 							<h3 align="left">Architecture</h3>
 
 							<p align="left">Blah blah blah</p>
@@ -128,7 +146,27 @@
 
 							<h3 align="left">Technical Components</h3>
 
-							<p align="left">Blah blah blah</p>
+							<p align="left">
+								The Smart Yu-Gi-Oh! Play Mat integrates multiple advanced technologies to provide a seamless and immersive experience:
+							</p>
+							<ul align="left">
+								<li>
+									<strong>Hardware:</strong> The system is powered by an ESP microcontroller board that manages all hardware components. It uses 13 light sensors to detect card placements on the mat.
+								</li>
+								<li>
+									<strong>AI Integration:</strong> Leveraging a Large Language Model (LLM) for processing voice commands, allowing players to perform in-game actions with natural language instructions.
+								</li>
+								<li>
+									<strong>Computer Vision:</strong> Equipped with a camera, the system employs computer vision (CV) techniques to recognize card IDs in real time.
+								</li>
+								<li>
+									<strong>Cloud Services:</strong> All data, including game states and player actions, is uploaded to a cloud server, ensuring real-time synchronization between players.
+								</li>
+								<li>
+									<strong>Web Interface:</strong> A dedicated website, built using the Flask framework, displays the game state and provides an interactive interface for players.
+								</li>
+							</ul>
+
 
 
 							<h3 align="left">Prototype</h3>
@@ -168,8 +206,30 @@
 							<header>
 								<h2>References</h2>
 							</header>
-
-							<p align="left">Blah blah blah</p>
+							
+							<ul align="left">
+								<li>
+									<a href="https://pytorch.org/vision/main/models/generated/torchvision.models.resnet18.html" target="_blank">
+										PyTorch Vision - ResNet18 Model Documentation
+									</a>
+								</li>
+								<li>
+									<a href="https://flask.palletsprojects.com/en/stable/" target="_blank">
+										Flask Framework Official Documentation
+									</a>
+								</li>
+								<li>
+									<a href="https://github.com/openai/whisper" target="_blank">
+										OpenAI Whisper - Speech Recognition Repository
+									</a>
+								</li>
+								<li>
+									<a href="https://www.gradio.app/" target="_blank">
+										Gradio - Build Machine Learning Interfaces
+									</a>
+								</li>
+							</ul>
+							
 
 						</div>
 					</section>
@@ -189,7 +249,7 @@
 							<div class="row">
 								<div class="4u 12u$(mobile)">
 									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
+										<a href="#" class="image fit"><img src="images/jl6850.jpg" alt="" class="image-fit" /></a>
 										<header>
 											<h3>Jinsong Liu</h3>
 											<p>Description and link</p>
@@ -198,7 +258,7 @@
 								</div>
 								<div class="4u 12u$(mobile)">
 									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
+										<a href="#" class="image fit"><img src="images/ml5141.jpg" alt="" class="image-fit" /></a>
 										<header>
 											<h3>Mingxuan Liu</h3>
 											<p>Description and link</p>
@@ -207,13 +267,14 @@
 								</div>
 								<div class="4u$ 12u$(mobile)">
 									<article class="item">
-										<a href="#" class="image fit"><img src="images/pic07.jpg" alt="" /></a>
+										<a href="#" class="image fit"><img src="images/cs4469.jpg" alt="" class="image-fit" /></a>
 										<header>
-											<h3>Changsheng shi</h3>
+											<h3>Changsheng Shi</h3>
 											<p>Description and link</p>
 										</header>
 									</article>
 								</div>
+								
 							</div>
 
 						</div>

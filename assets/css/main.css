@@ -1718,8 +1718,10 @@
 			}
 
 		.image.fit {
-			display: block;
-			width: 100%;
+			width: 100%; /* 确保图片自适应父容器宽度 */
+			height: auto; /* 保持宽高比例 */
+			object-fit: cover; /* 确保图片填充并裁剪以适应框 */
+			border-radius: 8px; /* 可选：增加圆角效果 */
 		}
 
 		.image.featured {
