@@ -2,6 +2,7 @@ import requests
 import time
 # 定义URL
 url = "http://127.0.0.1:5000/api/test"
+url = "http://34.123.213.115:5000/api/test"
 
 # 定义多个 payload 列表
 payloads = [
